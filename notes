@@ -1,0 +1,20 @@
+
+Most useful links:
+** http://tools.android.com/recent/usingthendkplugin
+** http://developer.android.com/tools/projects/projects-eclipse.html#SettingUpLibraryProject
+** http://spring.io/guides/gs/maven-android/
+** https://github.com/rmtheis/tess-two/tree/master/tess-two
+
+Dealing with native code in Android, maven:
+http://www.jameselsey.co.uk/blogs/techblog/tesseract-ocr-on-android-is-easier-if-you-maven-ise-it-works-on-windows-too/
+http://stackoverflow.com/questions/24882802/android-for-maven-eclipse-plug-in-cant-be-installed
+http://www.karlmonaghan.com/2013/03/28/eclipse-adt-maven-m2e-android-connector-setup/
+https://code.google.com/p/maven-android-plugin/wiki/GettingStarted
+
+Manipulating images in Android (libraries, info, et al):
+https://github.com/koush/ion/blob/master/ion-sample/src/com/koushikdutta/ion/sample/ImageViewSample.java
+https://plus.google.com/103583939320326217147/posts/bfAFC5YZ3mq
+
+Receiving data intents info:
+http://code.tutsplus.com/tutorials/android-sdk-receiving-data-from-the-send-intent--mobile-14878
+http://developer.android.com/training/sharing/receive.html
