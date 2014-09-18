@@ -18,7 +18,7 @@
 
 <resources>
 
-    <string name="app_name">DataReceiver</string>
+    <string name="app_name">Ingress Stat Tracker</string>
     <string name="action_settings">Settings</string>
     <string name="pic">Received Image</string>
     <string name="agent_name">Agent Name</string>

@@ -14,17 +14,17 @@
  * the License.
  */
 
-package info.kkyzivat.datareceiver;
+package info.kkyzivat.ingress_stat_tracker;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.ion.Ion;
-import com.squareup.picasso.Picasso;
-import com.googlecode.leptonica.android.Pixa;
-import com.googlecode.tesseract.android.ResultIterator;
+//import com.squareup.picasso.Picasso;
+//import com.googlecode.leptonica.android.Pixa;
+//import com.googlecode.tesseract.android.ResultIterator;
 import com.googlecode.tesseract.android.TessBaseAPI;
-import com.googlecode.tesseract.android.TessBaseAPI.PageIteratorLevel;
 import com.googlecode.tesseract.android.TessBaseAPI.PageSegMode;
+//import com.googlecode.tesseract.android.TessBaseAPI.PageIteratorLevel;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,7 +38,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class DataReceiverActivity extends Activity {
+public class StatTrackerActivity extends Activity {
 
 	private static final String TESSBASE_PATH = "/mnt/sdcard/tesseract/";
     private static final String DEFAULT_LANGUAGE = "eng";

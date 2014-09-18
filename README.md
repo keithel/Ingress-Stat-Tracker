@@ -1,7 +1,7 @@
-#Ingress Stats Tracker
+#Ingress Stat Tracker
 * * *
 
-A historical stats tracker for Ingress
+A historical stat tracker for Ingress
 This utilizes Tess Two ([tess-two](https://github.com/rmtheis/tess-two)) to OCR the Ingress All Time stats page screenshot.
 Tess Two is a fork of Tesseract Tools for Android ([tesseract-android-tools](http://code.google.com/p/tesseract-android-tools/)).
 
@@ -13,7 +13,7 @@ Tess Two is a fork of Tesseract Tools for Android ([tesseract-android-tools](htt
 
 Build
 =====
-* Import Ingress Stats Tracker into your Eclipse workspace (tested on Luna)
+* Import Ingress Stat Tracker into your Eclipse workspace (tested on Luna)
 * Clone and build tess-two sources.
 * Import tess-two project into eclipse
 
