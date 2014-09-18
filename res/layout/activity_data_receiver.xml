@@ -58,14 +58,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"/>
 
-            <TextView
-                android:id="@+id/restOfStatsLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rest_of_stats"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-<!--             <TextView
+             <TextView
                 android:id="@+id/upvLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,7 +86,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"/>
 
-            <TextView
+             <TextView
                 android:id="@+id/hacksLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -232,20 +225,142 @@
                 android:layout_height="fill_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"/>
- -->
-<!--     <string name="resonators_destroyed">Resonators Destroyed</string>
-    <string name="portals_neutralized">Portals Neutralized</string>
-    <string name="links_destroyed">Enemy Links Destroyed</string>
-    <string name="control_fields_destroyed">Enemy Control Fields Distroyed</string>
-    <string name="distance_walked">Distance Walked</string>
-    <string name="max_time_portal_held">Max Time Portal Held</string>
-    <string name="max_time_link_maintained">Max Time Link Maintained</string>
-    <string name="max_link_lengthxdays">Max Link Length × Days</string>
-    <string name="max_time_field_held">Max Time Field Held</string>
-    <string name="largest_field_muxdays">Largest Field MUs × Days</string>
- -->
+
             <TextView
-                android:id="@+id/restOfStatsText"
+                android:id="@+id/resonatorsDestroyedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/resonators_destroyed"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/resonatorsDestroyedText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/portalsNeutralizedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/portals_neutralized"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/portalsNeutralizedText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/linksDestroyedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/links_destroyed"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/linksDestroyedText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/controlFieldsDestroyedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/control_fields_destroyed"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/controlFieldsDestroyedText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/distanceWalkedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/distance_walked"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/distanceWalkedText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/maxTimePortalHeldLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max_time_portal_held"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/maxTimePortalHeldText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/maxTimeLinkMaintainedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max_time_link_maintained"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/maxTimeLinkMaintainedText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/maxLinkLengthxDaysLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max_link_lengthxdays"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/maxLinkLengthxDaysText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/maxTimeFieldHeldLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max_time_field_held"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/maxTimeFieldHeldText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/largestFieldMuxDaysLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_field_muxdays"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/largestFieldMuxDaysText"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_marginStart="10dp"
@@ -256,6 +371,21 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/pic" />
+
+
+            <TextView
+                android:id="@+id/restOfStatsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rest_of_stats"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/restOfStatsText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
 
         </LinearLayout>
 </ScrollView>

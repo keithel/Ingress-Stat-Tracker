@@ -38,13 +38,13 @@
     <string name="resonators_destroyed">Resonators Destroyed</string>
     <string name="portals_neutralized">Portals Neutralized</string>
     <string name="links_destroyed">Enemy Links Destroyed</string>
-    <string name="control_fields_destroyed">Enemy Control Fields Distroyed</string>
+    <string name="control_fields_destroyed">Enemy Control Fields Destroyed</string>
     <string name="distance_walked">Distance Walked</string>
     <string name="max_time_portal_held">Max Time Portal Held</string>
     <string name="max_time_link_maintained">Max Time Link Maintained</string>
-    <string name="max_link_lengthxdays">Max Link Length × Days</string>
+    <string name="max_link_lengthxdays">Max Link Length x Days</string>
     <string name="max_time_field_held">Max Time Field Held</string>
-    <string name="largest_field_muxdays">Largest Field MUs × Days</string>
+    <string name="largest_field_muxdays">Largest Field MUs x Days</string>
     <string name="rest_of_stats">Rest of Stats</string>
 
 </resources>

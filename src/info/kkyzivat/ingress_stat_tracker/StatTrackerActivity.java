@@ -20,14 +20,16 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.ion.Ion;
 //import com.squareup.picasso.Picasso;
-//import com.googlecode.leptonica.android.Pixa;
+import com.googlecode.leptonica.android.Pixa;
 //import com.googlecode.tesseract.android.ResultIterator;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.googlecode.tesseract.android.TessBaseAPI.PageSegMode;
 //import com.googlecode.tesseract.android.TessBaseAPI.PageIteratorLevel;
 
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -60,23 +62,98 @@ public class StatTrackerActivity extends Activity {
         // AP (270,300), (1000, 370) - example: 3,157,541 AP / 4,000,000 AP
         // Top of per-time-unit All Time stats - y pos: -1670px
 
+        Resources res = getResources();
         TextView agentNameView = (TextView) findViewById(R.id.agentNameText);
         TextView apView = (TextView) findViewById(R.id.apText);
         TextView restOfStatsView = (TextView) findViewById(R.id.restOfStatsText);
 
         baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_LINE);
         baseApi.setRectangle(270, 140, 630, 70);
-        agentNameView.setText(baseApi.getUTF8Text());
+        String agentName = baseApi.getUTF8Text();
+        Log.i("info", "Recognized Agent Name: " + agentName);
+        agentNameView.setText(agentName.replaceFirst(" EI$", ""));
 
         baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_LINE);
         baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "o");
         baseApi.setRectangle(270, 300, 730, 70);
         apView.setText(baseApi.getUTF8Text());
-
         baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "");
+
+        Bitmap restOfStatsBmp = Bitmap.createBitmap(bmp, 0, bmp.getHeight()-1670, bmp.getWidth(), 1670);
+        baseApi.setImage(restOfStatsBmp);
+
         baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_BLOCK);
-        baseApi.setRectangle(0, bmp.getHeight()-1670, bmp.getWidth(), 1670);
-        restOfStatsView.setText(baseApi.getUTF8Text());
+        String restOfStats = baseApi.getUTF8Text();
+        Pixa restOfLines = baseApi.getTextlines();
+        restOfStatsView.setText(restOfStats);
+
+        baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_LINE);
+        baseApi.setRectangle(restOfLines.getBoxRect(1));
+        ((TextView)findViewById(R.id.upvText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.upv) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(2));
+        ((TextView)findViewById(R.id.xmCollectedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.xm_collected) + " ", ""));
+
+
+        baseApi.setRectangle(restOfLines.getBoxRect(4));
+        ((TextView)findViewById(R.id.hacksText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.hacks) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(5));
+        ((TextView)findViewById(R.id.resonatorsDeployedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.resonators_deployed) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(6));
+        ((TextView)findViewById(R.id.linksCreatedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.links_created) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(7));
+        ((TextView)findViewById(R.id.controlFieldsCreatedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.control_fields_created) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(8));
+        ((TextView)findViewById(R.id.muText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.mu) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(9));
+        ((TextView)findViewById(R.id.longestLinkText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.longest_link) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(10));
+        ((TextView)findViewById(R.id.largestControlFieldText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.largest_control_field) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(11));
+        ((TextView)findViewById(R.id.xmRechargedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.xm_recharged) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(12));
+        ((TextView)findViewById(R.id.portalsCapturedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.portals_captured) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(13));
+        ((TextView)findViewById(R.id.upcText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.upc) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(15));
+        ((TextView)findViewById(R.id.resonatorsDestroyedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.resonators_destroyed) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(16));
+        ((TextView)findViewById(R.id.portalsNeutralizedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.portals_neutralized) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(17));
+        ((TextView)findViewById(R.id.linksDestroyedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.links_destroyed) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(18));
+        ((TextView)findViewById(R.id.controlFieldsDestroyedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.control_fields_destroyed) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(20));
+        ((TextView)findViewById(R.id.distanceWalkedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.distance_walked) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(22));
+        ((TextView)findViewById(R.id.maxTimePortalHeldText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.max_time_portal_held) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(23));
+        ((TextView)findViewById(R.id.maxTimeLinkMaintainedText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.max_time_link_maintained) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(24));
+        ((TextView)findViewById(R.id.maxLinkLengthxDaysText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.max_link_lengthxdays) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(25));
+        ((TextView)findViewById(R.id.maxTimeFieldHeldText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.max_time_field_held) + " ", ""));
+
+        baseApi.setRectangle(restOfLines.getBoxRect(26));
+        ((TextView)findViewById(R.id.largestFieldMuxDaysText)).setText(baseApi.getUTF8Text().replaceFirst(res.getString(R.string.largest_field_muxdays) + " ", ""));
 
         baseApi.end();
 }
