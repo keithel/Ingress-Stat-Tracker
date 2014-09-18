@@ -40,7 +40,7 @@ import android.widget.TextView;
 
 public class StatTrackerActivity extends Activity {
 
-	private static final String TESSBASE_PATH = "/mnt/sdcard/tesseract/";
+    private static final String TESSBASE_PATH = "/mnt/sdcard/tesseract/";
     private static final String DEFAULT_LANGUAGE = "eng";
 
     protected void ocrImage(Bitmap bmp)
@@ -50,35 +50,35 @@ public class StatTrackerActivity extends Activity {
         baseApi.init(TESSBASE_PATH, DEFAULT_LANGUAGE);
         baseApi.setDebug(true);
         baseApi.setPageSegMode(TessBaseAPI.PageSegMode.PSM_SINGLE_BLOCK);
-		baseApi.setImage(bmp);
-		String outputText = baseApi.getUTF8Text();
-		Log.i("info", String.format("Image size: %d x %d", bmp.getWidth(), bmp.getHeight())); 
-		Log.i("info", "Recognized text: " + outputText);
+        baseApi.setImage(bmp);
+        String outputText = baseApi.getUTF8Text();
+        Log.i("info", String.format("Image size: %d x %d", bmp.getWidth(), bmp.getHeight()));
+        Log.i("info", "Recognized text: " + outputText);
 
-		// Locations of stats onscreen, 0,0 at top left, negative numbers from bottom.
-		// Agent Name (270, 140), (900, 210) - example: Keithel [g+]
-		// AP (270,300), (1000, 370) - example: 3,157,541 AP / 4,000,000 AP
-		// Top of per-time-unit All Time stats - y pos: -1670px
-		
-		TextView agentNameView = (TextView) findViewById(R.id.agentNameText);
-		TextView apView = (TextView) findViewById(R.id.apText);
-		TextView restOfStatsView = (TextView) findViewById(R.id.restOfStatsText);
+        // Locations of stats onscreen, 0,0 at top left, negative numbers from bottom.
+        // Agent Name (270, 140), (900, 210) - example: Keithel [g+]
+        // AP (270,300), (1000, 370) - example: 3,157,541 AP / 4,000,000 AP
+        // Top of per-time-unit All Time stats - y pos: -1670px
 
-		baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_LINE);
-		baseApi.setRectangle(270, 140, 630, 70);
-		agentNameView.setText(baseApi.getUTF8Text());
+        TextView agentNameView = (TextView) findViewById(R.id.agentNameText);
+        TextView apView = (TextView) findViewById(R.id.apText);
+        TextView restOfStatsView = (TextView) findViewById(R.id.restOfStatsText);
 
-		baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_LINE);
-		baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "o");
-		baseApi.setRectangle(270, 300, 730, 70);
-		apView.setText(baseApi.getUTF8Text());
+        baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_LINE);
+        baseApi.setRectangle(270, 140, 630, 70);
+        agentNameView.setText(baseApi.getUTF8Text());
 
-		baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "");
-		baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_BLOCK);
-		baseApi.setRectangle(0, bmp.getHeight()-1670, bmp.getWidth(), 1670);
-		restOfStatsView.setText(baseApi.getUTF8Text());
+        baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_LINE);
+        baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "o");
+        baseApi.setRectangle(270, 300, 730, 70);
+        apView.setText(baseApi.getUTF8Text());
 
-		baseApi.end();
+        baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "");
+        baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_BLOCK);
+        baseApi.setRectangle(0, bmp.getHeight()-1670, bmp.getWidth(), 1670);
+        restOfStatsView.setText(baseApi.getUTF8Text());
+
+        baseApi.end();
 }
 
     @Override
@@ -95,58 +95,58 @@ public class StatTrackerActivity extends Activity {
             String receivedType = receivedIntent.getType();
             if (receivedType.startsWith("text/"))
             {
-            	String receivedText = receivedIntent.getStringExtra(Intent.EXTRA_TEXT);
-            	if (receivedText != null)
-            	{
-            		Log.i("info", "Text received: " + receivedText);
-            		txtView.setText(receivedText);
-            	}
+                String receivedText = receivedIntent.getStringExtra(Intent.EXTRA_TEXT);
+                if (receivedText != null)
+                {
+                    Log.i("info", "Text received: " + receivedText);
+                    txtView.setText(receivedText);
+                }
             }
             else if (receivedType.startsWith("image/"))
             {
-            	txtView.setText("Waiting for image");
-            	Uri receivedUri = (Uri)receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);            	
-            	
-            	if (receivedUri != null)
-            	{
-//            		if (receivedUri.getPath().startsWith("/storage/emulated/0"))
-//            		{
-//            			String newUriStr = receivedUri.toString().replace("/storage/emulated/0", "/storage/emulated/legacy");
-//            			receivedUri = Uri.parse(newUriStr);
-//            		}
+                txtView.setText("Waiting for image");
+                Uri receivedUri = (Uri)receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
 
-            		Log.i("info", "Image received with type " + receivedType + ", URI " + receivedUri.toString());
-//            		Ion.with(this).load(receivedUri.toString()).withBitmap().resize(1000, 1000).centerInside().intoImageView(picView);
-            		Ion.with(this).load(receivedUri.toString()).withBitmap().intoImageView(picView);
-            		txtView.setText("Stats image loaded");
-            		
-//            		Picasso.with(this).load(receivedUri).centerInside().fit().into(picView);
-//            		picView.setImageURI(receivedUri);
+                if (receivedUri != null)
+                {
+//                  if (receivedUri.getPath().startsWith("/storage/emulated/0"))
+//                  {
+//                      String newUriStr = receivedUri.toString().replace("/storage/emulated/0", "/storage/emulated/legacy");
+//                      receivedUri = Uri.parse(newUriStr);
+//                  }
+
+                    Log.i("info", "Image received with type " + receivedType + ", URI " + receivedUri.toString());
+//                  Ion.with(this).load(receivedUri.toString()).withBitmap().resize(1000, 1000).centerInside().intoImageView(picView);
+                    Ion.with(this).load(receivedUri.toString()).withBitmap().intoImageView(picView);
+                    txtView.setText("Stats image loaded");
+
+//                  Picasso.with(this).load(receivedUri).centerInside().fit().into(picView);
+//                  picView.setImageURI(receivedUri);
                     Future<Bitmap> future = Ion.with(this).load(receivedUri.toString()).asBitmap();
                     future.setCallback(new FutureCallback<Bitmap>()
                     {
-                    	@Override
-                    	public void onCompleted(Exception e, Bitmap bmp)
-                    	{
-                    		if (e != null)
-                    		{
-                    			e.printStackTrace();
-                    			return;
-                    		}
-                    		
-                    		ocrImage(bmp);
-                    	}
+                        @Override
+                        public void onCompleted(Exception e, Bitmap bmp)
+                        {
+                            if (e != null)
+                            {
+                                e.printStackTrace();
+                                return;
+                            }
+
+                            ocrImage(bmp);
+                        }
                     });
-            	}
-            	else
-            	{
-            		txtView.setText("No image was sent!");
-            	}
+                }
+                else
+                {
+                    txtView.setText("No image was sent!");
+                }
             }
         }
         else if (receivedAction.equals(Intent.ACTION_MAIN))
         {
-        	txtView.setText("Nothing has been shared!");
+            txtView.setText("Nothing has been shared!");
         }
     }
 

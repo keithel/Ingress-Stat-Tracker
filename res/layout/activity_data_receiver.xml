@@ -243,7 +243,7 @@
     <string name="max_link_lengthxdays">Max Link Length × Days</string>
     <string name="max_time_field_held">Max Time Field Held</string>
     <string name="largest_field_muxdays">Largest Field MUs × Days</string>
- -->            
+ -->
             <TextView
                 android:id="@+id/restOfStatsText"
                 android:layout_width="fill_parent"
@@ -251,11 +251,11 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"/>
 
-		    <ImageView
-		        android:id="@+id/picture"
-		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"
-		        android:contentDescription="@string/pic" />
+            <ImageView
+                android:id="@+id/picture"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:contentDescription="@string/pic" />
 
         </LinearLayout>
 </ScrollView>
