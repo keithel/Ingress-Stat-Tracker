@@ -58,6 +58,7 @@ public class StatTrackerActivity extends Activity {
     private String mLongestLinkStr;
     private String mLargestControlFieldStr;
     private String mXmRechargedStr;
+    private String mXmRecharged2Str;
     private String mCapturesStr;
     private String mUpcStr;
     private String mResonatorsDestroyedStr;
@@ -144,9 +145,13 @@ public class StatTrackerActivity extends Activity {
             {
                 mStatsMap.put(mLargestControlFieldStr, baseApi.getUTF8Text().replaceFirst(mLargestControlFieldStr + " ", ""));
             }
-            else if (text.startsWith("XM Re"))
+            else if (text.startsWith(mXmRechargedStr))
             {
                 mStatsMap.put(mXmRechargedStr, baseApi.getUTF8Text().replaceFirst(mXmRechargedStr + " ", ""));
+            }
+            else if (text.startsWith(mXmRecharged2Str))
+            {
+                mStatsMap.put(mXmRechargedStr, baseApi.getUTF8Text().replaceFirst(mXmRecharged2Str + " ", ""));
             }
             else if (text.startsWith(mCapturesStr))
             {
@@ -261,6 +266,7 @@ public class StatTrackerActivity extends Activity {
         mLongestLinkStr = res.getString(R.string.longest_link);
         mLargestControlFieldStr = res.getString(R.string.largest_control_field);
         mXmRechargedStr = res.getString(R.string.xm_recharged);
+        mXmRecharged2Str = res.getString(R.string.xm_recharged2);
         mCapturesStr = res.getString(R.string.portals_captured);
         mUpcStr = res.getString(R.string.upc);
         mResonatorsDestroyedStr = res.getString(R.string.resonators_destroyed);
