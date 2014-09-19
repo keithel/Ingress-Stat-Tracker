@@ -16,15 +16,14 @@
 
 package info.kkyzivat.ingress_stat_tracker;
 
+import java.io.IOException;
 import java.util.HashMap;
-
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.async.future.Future;
-import com.koushikdutta.ion.Ion;
-//import com.squareup.picasso.Picasso;
-import com.googlecode.leptonica.android.Pixa;
-import com.googlecode.tesseract.android.TessBaseAPI;
-import com.googlecode.tesseract.android.TessBaseAPI.PageSegMode;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,11 +38,17 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+//import com.squareup.picasso.Picasso;
+import com.googlecode.leptonica.android.Pixa;
+import com.googlecode.tesseract.android.TessBaseAPI;
+import com.googlecode.tesseract.android.TessBaseAPI.PageSegMode;
+import com.koushikdutta.ion.Ion;
+
 
 public class StatTrackerActivity extends Activity {
 
-    private static final String TESSBASE_PATH = "/mnt/sdcard/tesseract/";
     private static final String DEFAULT_LANGUAGE = "eng";
+    private static Future<String> sTessBasePath;
 
     private String mAgentStr;
     private String mApStr;
@@ -71,6 +76,7 @@ public class StatTrackerActivity extends Activity {
     private String mMaxLinkLengthxDaysStr;
     private String mMaxTimeFieldHeldStr;
     private String mLargestFieldMuxDaysStr;
+    private Set<String> mStatNames;
 
     private HashMap<String, String> mStatsMap;
 
@@ -79,13 +85,13 @@ public class StatTrackerActivity extends Activity {
         mStatsMap = new HashMap<String, String>();
     }
 
-    protected void populateMap(Bitmap bmp)
+    protected void populateMap(Bitmap bmp) throws ExecutionException, InterruptedException
     {
         Log.i("info", String.format("Image size: %d x %d", bmp.getWidth(), bmp.getHeight()));
 
         // Attempt to initialize the API.
         final TessBaseAPI baseApi = new TessBaseAPI();
-        baseApi.init(TESSBASE_PATH, DEFAULT_LANGUAGE);
+        baseApi.init(sTessBasePath.get(), DEFAULT_LANGUAGE);
         baseApi.setPageSegMode(TessBaseAPI.PageSegMode.PSM_SINGLE_BLOCK);
         baseApi.setImage(bmp);
         Pixa allLinesPixa = baseApi.getTextlines();
@@ -105,101 +111,12 @@ public class StatTrackerActivity extends Activity {
         {
             baseApi.setRectangle(curRect);
             String text = baseApi.getUTF8Text();
-            if (text.startsWith(mUpvStr))
+            for (String statName : mStatNames)
             {
-                mStatsMap.put(mUpvStr, baseApi.getUTF8Text().replaceFirst(mUpvStr + " ", ""));
-            }
-            else if (text.startsWith(mDiscoversStr))
-            {
-                mStatsMap.put(mDiscoversStr, baseApi.getUTF8Text().replaceFirst(mDiscoversStr + " ", ""));
-            }
-            else if (text.startsWith(mXmStr))
-            {
-                mStatsMap.put(mXmStr, baseApi.getUTF8Text().replaceFirst(mXmStr + " ", ""));
-            }
-            else if (text.startsWith(mHacksStr))
-            {
-                mStatsMap.put(mHacksStr, baseApi.getUTF8Text().replaceFirst(mHacksStr + " ", ""));
-            }
-            else if (text.startsWith(mResonatorsDeployedStr))
-            {
-                mStatsMap.put(mResonatorsDeployedStr, baseApi.getUTF8Text().replaceFirst(mResonatorsDeployedStr + " ", ""));
-            }
-            else if (text.startsWith(mLinksCreatedStr))
-            {
-                mStatsMap.put(mLinksCreatedStr, baseApi.getUTF8Text().replaceFirst(mLinksCreatedStr + " ", ""));
-            }
-            else if (text.startsWith(mControlFieldsCreatedStr))
-            {
-                mStatsMap.put(mControlFieldsCreatedStr, baseApi.getUTF8Text().replaceFirst(mControlFieldsCreatedStr + " ", ""));
-            }
-            else if (text.startsWith(mMuStr))
-            {
-                mStatsMap.put(mMuStr, baseApi.getUTF8Text().replaceFirst(mMuStr + " ", ""));
-            }
-            else if (text.startsWith(mLongestLinkStr))
-            {
-                mStatsMap.put(mLongestLinkStr, baseApi.getUTF8Text().replaceFirst(mLongestLinkStr + " ", ""));
-            }
-            else if (text.startsWith(mLargestControlFieldStr))
-            {
-                mStatsMap.put(mLargestControlFieldStr, baseApi.getUTF8Text().replaceFirst(mLargestControlFieldStr + " ", ""));
-            }
-            else if (text.startsWith(mXmRechargedStr))
-            {
-                mStatsMap.put(mXmRechargedStr, baseApi.getUTF8Text().replaceFirst(mXmRechargedStr + " ", ""));
-            }
-            else if (text.startsWith(mXmRecharged2Str))
-            {
-                mStatsMap.put(mXmRechargedStr, baseApi.getUTF8Text().replaceFirst(mXmRecharged2Str + " ", ""));
-            }
-            else if (text.startsWith(mCapturesStr))
-            {
-                mStatsMap.put(mCapturesStr, baseApi.getUTF8Text().replaceFirst(mCapturesStr + " ", ""));
-            }
-            else if (text.startsWith(mUpcStr))
-            {
-                mStatsMap.put(mUpcStr, baseApi.getUTF8Text().replaceFirst(mUpcStr + " ", ""));
-            }
-            else if (text.startsWith(mResonatorsDestroyedStr))
-            {
-                mStatsMap.put(mResonatorsDestroyedStr, baseApi.getUTF8Text().replaceFirst(mResonatorsDestroyedStr + " ", ""));
-            }
-            else if (text.startsWith(mPortalsNeutralizedStr))
-            {
-                mStatsMap.put(mPortalsNeutralizedStr, baseApi.getUTF8Text().replaceFirst(mPortalsNeutralizedStr + " ", ""));
-            }
-            else if (text.startsWith(mLinksDestroyedStr))
-            {
-                mStatsMap.put(mLinksDestroyedStr, baseApi.getUTF8Text().replaceFirst(mLinksDestroyedStr + " ", ""));
-            }
-            else if (text.startsWith(mControlFieldsDestroyedStr))
-            {
-                mStatsMap.put(mControlFieldsDestroyedStr, baseApi.getUTF8Text().replaceFirst(mControlFieldsDestroyedStr + " ", ""));
-            }
-            else if (text.startsWith(mDistanceWalkedStr))
-            {
-                mStatsMap.put(mDistanceWalkedStr, baseApi.getUTF8Text().replaceFirst(mDistanceWalkedStr + " ", ""));
-            }
-            else if (text.startsWith(mMaxTimePortalHeldStr))
-            {
-                mStatsMap.put(mMaxTimePortalHeldStr, baseApi.getUTF8Text().replaceFirst(mMaxTimePortalHeldStr + " ", ""));
-            }
-            else if (text.startsWith(mMaxTimeLinkMaintainedStr))
-            {
-                mStatsMap.put(mMaxTimeLinkMaintainedStr, baseApi.getUTF8Text().replaceFirst(mMaxTimeLinkMaintainedStr + " ", ""));
-            }
-            else if (text.startsWith(mMaxLinkLengthxDaysStr))
-            {
-                mStatsMap.put(mMaxLinkLengthxDaysStr, baseApi.getUTF8Text().replaceFirst(mMaxLinkLengthxDaysStr + " ", ""));
-            }
-            else if (text.startsWith(mMaxTimeFieldHeldStr))
-            {
-                mStatsMap.put(mMaxTimeFieldHeldStr, baseApi.getUTF8Text().replaceFirst(mMaxTimeFieldHeldStr + " ", ""));
-            }
-            else if (text.startsWith(mLargestFieldMuxDaysStr))
-            {
-                mStatsMap.put(mLargestFieldMuxDaysStr, baseApi.getUTF8Text().replaceFirst(mLargestFieldMuxDaysStr + " ", ""));
+                if (text.startsWith(statName))
+                {
+                    mStatsMap.put(statName, baseApi.getUTF8Text().replaceFirst(statName + " ", ""));
+                }
             }
         }
         baseApi.end();
@@ -207,78 +124,123 @@ public class StatTrackerActivity extends Activity {
 
     protected void ocrImage(Bitmap bmp)
     {
-        populateMap(bmp);
+        TextView agentNameView = (TextView) findViewById(R.id.agentNameText);
+        try
+        {
+            populateMap(bmp);
 
-        ((TextView) findViewById(R.id.agentNameText)).setText(mStatsMap.get(mAgentStr));
-        ((TextView) findViewById(R.id.apText)).setText(mStatsMap.get(mApStr));
+            agentNameView.setText(mStatsMap.get(mAgentStr));
+            ((TextView) findViewById(R.id.apText)).setText(mStatsMap.get(mApStr));
 
-//        baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_BLOCK);
-//        String restOfStats = baseApi.getUTF8Text();
-//        ((TextView) findViewById(R.id.restOfStatsText)).setText(restOfStats);
+    //        baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_BLOCK);
+    //        String restOfStats = baseApi.getUTF8Text();
+    //        ((TextView) findViewById(R.id.restOfStatsText)).setText(restOfStats);
 
-        // Discovery
-        ((TextView)findViewById(R.id.upvText)).setText(mStatsMap.get(mUpvStr));
-        ((TextView)findViewById(R.id.portalsDiscoveredText)).setText(mStatsMap.get(mDiscoversStr));
-        ((TextView)findViewById(R.id.xmCollectedText)).setText(mStatsMap.get(mXmStr));
+            // Discovery
+            ((TextView)findViewById(R.id.upvText)).setText(mStatsMap.get(mUpvStr));
+            ((TextView)findViewById(R.id.portalsDiscoveredText)).setText(mStatsMap.get(mDiscoversStr));
+            ((TextView)findViewById(R.id.xmCollectedText)).setText(mStatsMap.get(mXmStr));
 
-        // Building
-        ((TextView)findViewById(R.id.hacksText)).setText(mStatsMap.get(mHacksStr));
-        ((TextView)findViewById(R.id.resonatorsDeployedText)).setText(mStatsMap.get(mResonatorsDeployedStr));
-        ((TextView)findViewById(R.id.linksCreatedText)).setText(mStatsMap.get(mLinksCreatedStr));
-        ((TextView)findViewById(R.id.controlFieldsCreatedText)).setText(mStatsMap.get(mControlFieldsCreatedStr));
-        ((TextView)findViewById(R.id.muText)).setText(mStatsMap.get(mMuStr));
-        ((TextView)findViewById(R.id.longestLinkText)).setText(mStatsMap.get(mLongestLinkStr));
-        ((TextView)findViewById(R.id.largestControlFieldText)).setText(mStatsMap.get(mLargestControlFieldStr));
-        ((TextView)findViewById(R.id.xmRechargedText)).setText(mStatsMap.get(mXmRechargedStr));
-        ((TextView)findViewById(R.id.portalsCapturedText)).setText(mStatsMap.get(mCapturesStr));
-        ((TextView)findViewById(R.id.upcText)).setText(mStatsMap.get(mUpcStr));
+            // Building
+            ((TextView)findViewById(R.id.hacksText)).setText(mStatsMap.get(mHacksStr));
+            ((TextView)findViewById(R.id.resonatorsDeployedText)).setText(mStatsMap.get(mResonatorsDeployedStr));
+            ((TextView)findViewById(R.id.linksCreatedText)).setText(mStatsMap.get(mLinksCreatedStr));
+            ((TextView)findViewById(R.id.controlFieldsCreatedText)).setText(mStatsMap.get(mControlFieldsCreatedStr));
+            ((TextView)findViewById(R.id.muText)).setText(mStatsMap.get(mMuStr));
+            ((TextView)findViewById(R.id.longestLinkText)).setText(mStatsMap.get(mLongestLinkStr));
+            ((TextView)findViewById(R.id.largestControlFieldText)).setText(mStatsMap.get(mLargestControlFieldStr));
+            ((TextView)findViewById(R.id.xmRechargedText)).setText(mStatsMap.get(mXmRechargedStr));
+            ((TextView)findViewById(R.id.portalsCapturedText)).setText(mStatsMap.get(mCapturesStr));
+            ((TextView)findViewById(R.id.upcText)).setText(mStatsMap.get(mUpcStr));
 
-        // Combat
-        ((TextView)findViewById(R.id.resonatorsDestroyedText)).setText(mStatsMap.get(mResonatorsDestroyedStr));
-        ((TextView)findViewById(R.id.portalsNeutralizedText)).setText(mStatsMap.get(mPortalsNeutralizedStr));
-        ((TextView)findViewById(R.id.linksDestroyedText)).setText(mStatsMap.get(mLinksDestroyedStr));
-        ((TextView)findViewById(R.id.controlFieldsDestroyedText)).setText(mStatsMap.get(mControlFieldsDestroyedStr));
+            // Combat
+            ((TextView)findViewById(R.id.resonatorsDestroyedText)).setText(mStatsMap.get(mResonatorsDestroyedStr));
+            ((TextView)findViewById(R.id.portalsNeutralizedText)).setText(mStatsMap.get(mPortalsNeutralizedStr));
+            ((TextView)findViewById(R.id.linksDestroyedText)).setText(mStatsMap.get(mLinksDestroyedStr));
+            ((TextView)findViewById(R.id.controlFieldsDestroyedText)).setText(mStatsMap.get(mControlFieldsDestroyedStr));
 
-        // Health
-        ((TextView)findViewById(R.id.distanceWalkedText)).setText(mStatsMap.get(mDistanceWalkedStr));
+            // Health
+            ((TextView)findViewById(R.id.distanceWalkedText)).setText(mStatsMap.get(mDistanceWalkedStr));
 
-        // Defense
-        ((TextView)findViewById(R.id.maxTimePortalHeldText)).setText(mStatsMap.get(mMaxTimePortalHeldStr));
-        ((TextView)findViewById(R.id.maxTimeLinkMaintainedText)).setText(mStatsMap.get(mMaxTimeLinkMaintainedStr));
-        ((TextView)findViewById(R.id.maxLinkLengthxDaysText)).setText(mStatsMap.get(mMaxLinkLengthxDaysStr));
-        ((TextView)findViewById(R.id.maxTimeFieldHeldText)).setText(mStatsMap.get(mMaxTimeFieldHeldStr));
-        ((TextView)findViewById(R.id.largestFieldMuxDaysText)).setText(mStatsMap.get(mLargestFieldMuxDaysStr));
+            // Defense
+            ((TextView)findViewById(R.id.maxTimePortalHeldText)).setText(mStatsMap.get(mMaxTimePortalHeldStr));
+            ((TextView)findViewById(R.id.maxTimeLinkMaintainedText)).setText(mStatsMap.get(mMaxTimeLinkMaintainedStr));
+            ((TextView)findViewById(R.id.maxLinkLengthxDaysText)).setText(mStatsMap.get(mMaxLinkLengthxDaysStr));
+            ((TextView)findViewById(R.id.maxTimeFieldHeldText)).setText(mStatsMap.get(mMaxTimeFieldHeldStr));
+            ((TextView)findViewById(R.id.largestFieldMuxDaysText)).setText(mStatsMap.get(mLargestFieldMuxDaysStr));
+        }
+        catch (ExecutionException ee)
+        {
+            String msg = "Unable to initialize Tesseract data files";
+            if (ee.getCause() instanceof IOException)
+                msg = msg + " - IOException";
+            Log.i("info", Log.getStackTraceString(ee));
+            agentNameView.setText(msg);
+        }
+        catch (InterruptedException ie)
+        {
+            Log.i("info", Log.getStackTraceString(ie));
+            agentNameView.setText("Interrupted while trying to initialize Tesseract data files");
+        }
 }
 
     private void initResourceStrings()
     {
+        mStatNames = new HashSet<String>();
         Resources res = getResources();
+
         mAgentStr = res.getString(R.string.agent_name);
+        mStatNames.add(mAgentStr);
         mApStr = res.getString(R.string.ap);
+        mStatNames.add(mApStr);
         mUpvStr = res.getString(R.string.upv);
+        mStatNames.add(mUpvStr);
         mDiscoversStr = res.getString(R.string.portals_discovered);
+        mStatNames.add(mDiscoversStr);
         mXmStr = res.getString(R.string.xm_collected);
+        mStatNames.add(mXmStr);
         mHacksStr = res.getString(R.string.hacks);
+        mStatNames.add(mHacksStr);
         mResonatorsDeployedStr = res.getString(R.string.resonators_deployed);
+        mStatNames.add(mResonatorsDeployedStr);
         mLinksCreatedStr = res.getString(R.string.links_created);
+        mStatNames.add(mLinksCreatedStr);
         mControlFieldsCreatedStr = res.getString(R.string.control_fields_created);
+        mStatNames.add(mControlFieldsCreatedStr);
         mMuStr = res.getString(R.string.mu);
+        mStatNames.add(mMuStr);
         mLongestLinkStr = res.getString(R.string.longest_link);
+        mStatNames.add(mLongestLinkStr);
         mLargestControlFieldStr = res.getString(R.string.largest_control_field);
+        mStatNames.add(mLargestControlFieldStr);
         mXmRechargedStr = res.getString(R.string.xm_recharged);
+        mStatNames.add(mXmRechargedStr);
         mXmRecharged2Str = res.getString(R.string.xm_recharged2);
+        mStatNames.add(mXmRecharged2Str);
         mCapturesStr = res.getString(R.string.portals_captured);
+        mStatNames.add(mCapturesStr);
         mUpcStr = res.getString(R.string.upc);
+        mStatNames.add(mUpcStr);
         mResonatorsDestroyedStr = res.getString(R.string.resonators_destroyed);
+        mStatNames.add(mResonatorsDestroyedStr);
         mPortalsNeutralizedStr = res.getString(R.string.portals_neutralized);
+        mStatNames.add(mPortalsNeutralizedStr);
         mLinksDestroyedStr = res.getString(R.string.links_destroyed);
+        mStatNames.add(mLinksDestroyedStr);
         mControlFieldsDestroyedStr = res.getString(R.string.control_fields_destroyed);
+        mStatNames.add(mControlFieldsDestroyedStr);
         mDistanceWalkedStr = res.getString(R.string.distance_walked);
+        mStatNames.add(mDistanceWalkedStr);
         mMaxTimePortalHeldStr = res.getString(R.string.max_time_portal_held);
+        mStatNames.add(mMaxTimePortalHeldStr);
         mMaxTimeLinkMaintainedStr = res.getString(R.string.max_time_link_maintained);
+        mStatNames.add(mMaxTimeLinkMaintainedStr);
         mMaxLinkLengthxDaysStr = res.getString(R.string.max_link_lengthxdays);
+        mStatNames.add(mMaxLinkLengthxDaysStr);
         mMaxTimeFieldHeldStr = res.getString(R.string.max_time_field_held);
+        mStatNames.add(mMaxTimeFieldHeldStr);
         mLargestFieldMuxDaysStr = res.getString(R.string.largest_field_muxdays);
+        mStatNames.add(mLargestFieldMuxDaysStr);
 
     }
 
@@ -306,6 +268,9 @@ public class StatTrackerActivity extends Activity {
             }
             else if (receivedType.startsWith("image/"))
             {
+                ExecutorService executor = Executors.newFixedThreadPool(1);
+                sTessBasePath = executor.submit(new TessDataInitializer(this));
+
                 txtView.setText("Waiting for image");
                 Uri receivedUri = (Uri)receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
 
@@ -324,8 +289,8 @@ public class StatTrackerActivity extends Activity {
 
 //                  Picasso.with(this).load(receivedUri).centerInside().fit().into(picView);
 //                  picView.setImageURI(receivedUri);
-                    Future<Bitmap> future = Ion.with(this).load(receivedUri.toString()).asBitmap();
-                    future.setCallback(new FutureCallback<Bitmap>()
+                    com.koushikdutta.async.future.Future<Bitmap> future = Ion.with(this).load(receivedUri.toString()).asBitmap();
+                    future.setCallback(new com.koushikdutta.async.future.FutureCallback<Bitmap>()
                     {
                         @Override
                         public void onCompleted(Exception e, Bitmap bmp)
@@ -343,6 +308,7 @@ public class StatTrackerActivity extends Activity {
                             catch (Throwable thr)
                             {
                                 Log.i("info", "ocrImage failed:\n" + Log.getStackTraceString(thr));
+                                ((TextView) findViewById(R.id.agentNameText)).setText(thr.getMessage());
                                 return;
                             }
                         }
