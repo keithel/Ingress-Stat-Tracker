@@ -211,7 +211,15 @@ public class StatTrackerActivity extends Activity {
                                 return;
                             }
 
-                            ocrImage(bmp);
+                            try
+                            {
+                                ocrImage(bmp);
+                            }
+                            catch (Throwable thr)
+                            {
+                                Log.i("info", "ocrImage failed:\n" + Log.getStackTraceString(thr));
+                                return;
+                            }
                         }
                     });
                 }
