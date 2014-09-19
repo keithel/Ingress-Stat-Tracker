@@ -72,6 +72,20 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"/>
 
+             <TextView
+                android:id="@+id/portalsDiscoveredLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/portals_discovered"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/portalsDiscoveredText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"/>
+
             <TextView
                 android:id="@+id/xmCollectedLabel"
                 android:layout_width="wrap_content"

@@ -24,6 +24,7 @@
     <string name="agent_name">Agent Name</string>
     <string name="ap">AP</string>
     <string name="upv">Unique Portals Visited</string>
+    <string name="portals_discovered">Portals Discovered</string>
     <string name="xm_collected">XM Collected</string>
     <string name="hacks">Hacks</string>
     <string name="resonators_deployed">Resonators Deployed</string>
