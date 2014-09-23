@@ -386,20 +386,5 @@
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/pic" />
 
-
-            <TextView
-                android:id="@+id/restOfStatsLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rest_of_stats"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/restOfStatsText"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"/>
-
         </LinearLayout>
 </ScrollView>

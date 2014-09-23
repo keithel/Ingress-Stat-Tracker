@@ -131,10 +131,6 @@ public class StatTrackerActivity extends Activity {
             agentNameView.setText(mStatsMap.get(mAgentStr));
             ((TextView) findViewById(R.id.apText)).setText(mStatsMap.get(mApStr));
 
-    //        baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_BLOCK);
-    //        String restOfStats = baseApi.getUTF8Text();
-    //        ((TextView) findViewById(R.id.restOfStatsText)).setText(restOfStats);
-
             // Discovery
             ((TextView)findViewById(R.id.upvText)).setText(mStatsMap.get(mUpvStr));
             ((TextView)findViewById(R.id.portalsDiscoveredText)).setText(mStatsMap.get(mDiscoversStr));
