@@ -38,7 +38,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-//import com.squareup.picasso.Picasso;
 import com.googlecode.leptonica.android.Pixa;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.googlecode.tesseract.android.TessBaseAPI.PageSegMode;
@@ -287,8 +286,6 @@ public class StatTrackerActivity extends Activity {
                     Ion.with(this).load(receivedUri.toString()).withBitmap().intoImageView(picView);
                     txtView.setText("Stats image loaded");
 
-//                  Picasso.with(this).load(receivedUri).centerInside().fit().into(picView);
-//                  picView.setImageURI(receivedUri);
                     com.koushikdutta.async.future.Future<Bitmap> future = Ion.with(this).load(receivedUri.toString()).asBitmap();
                     future.setCallback(new com.koushikdutta.async.future.FutureCallback<Bitmap>()
                     {
