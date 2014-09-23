@@ -271,14 +271,7 @@ public class StatTrackerActivity extends Activity {
 
                 if (receivedUri != null)
                 {
-//                  if (receivedUri.getPath().startsWith("/storage/emulated/0"))
-//                  {
-//                      String newUriStr = receivedUri.toString().replace("/storage/emulated/0", "/storage/emulated/legacy");
-//                      receivedUri = Uri.parse(newUriStr);
-//                  }
-
                     Log.i("info", "Image received with type " + receivedType + ", URI " + receivedUri.toString());
-//                  Ion.with(this).load(receivedUri.toString()).withBitmap().resize(1000, 1000).centerInside().intoImageView(picView);
                     Ion.with(this).load(receivedUri.toString()).withBitmap().intoImageView(picView);
                     txtView.setText("Stats image loaded");
 
