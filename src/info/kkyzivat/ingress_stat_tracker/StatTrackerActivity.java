@@ -284,6 +284,29 @@ public class StatTrackerActivity extends Activity {
             setTextViewText(R.id.agentNameText, currentStats.getAgent());
             setTextViewText(R.id.apText, String.format("%d", currentStats.getAp()));
             setTextViewText(R.id.upvText, String.format("%d", currentStats.getUpvs()));
+            setTextViewText(R.id.portalsDiscoveredText, String.format("%d", currentStats.getPortalsDiscovered()));
+            setTextViewText(R.id.xmCollectedText, String.format("%d", currentStats.getXmCollected()));
+            setTextViewText(R.id.hacksText, String.format("%d", currentStats.getHacks()));
+            setTextViewText(R.id.resonatorsDeployedText, String.format("%d", currentStats.getResonatorsDeployed()));
+            setTextViewText(R.id.linksCreatedText, String.format("%d", currentStats.getLinksCreated()));
+            setTextViewText(R.id.controlFieldsCreatedText, String.format("%d", currentStats.getControlFieldsCreated()));
+            setTextViewText(R.id.muText, String.format("%d", currentStats.getMindUnitsCaptured()));
+            setTextViewText(R.id.longestLinkText, String.format("%d", currentStats.getLongestLink()));
+            setTextViewText(R.id.largestControlFieldText, String.format("%d", currentStats.getLargestControlField()));
+            setTextViewText(R.id.xmRechargedText, String.format("%d", currentStats.getXmRecharged()));
+            setTextViewText(R.id.portalsCapturedText, String.format("%d", currentStats.getPortalsCaptured()));
+            setTextViewText(R.id.upcText, String.format("%d", currentStats.getUpcs()));
+            setTextViewText(R.id.resonatorsDestroyedText, String.format("%d", currentStats.getResonatorsDestroyed()));
+            setTextViewText(R.id.portalsNeutralizedText, String.format("%d", currentStats.getPortalsNeutralized()));
+            setTextViewText(R.id.linksDestroyedText, String.format("%d", currentStats.getLinksDestroyed()));
+            setTextViewText(R.id.controlFieldsDestroyedText, String.format("%d", currentStats.getControlFieldsDestroyed()));
+            setTextViewText(R.id.distanceWalkedText, String.format("%d", currentStats.getDistanceWalked()));
+            setTextViewText(R.id.maxTimePortalHeldText, String.format("%d", currentStats.getMaxTimePortalHeld()));
+            setTextViewText(R.id.maxTimeLinkMaintainedText, String.format("%d", currentStats.getMaxTimeLinkMaintained()));
+            setTextViewText(R.id.maxLinkLengthxDaysText, String.format("%d", currentStats.getMaxLinkLengthxDays()));
+            setTextViewText(R.id.maxTimeFieldHeldText, String.format("%d", currentStats.getMaxTimeFieldHeld()));
+            setTextViewText(R.id.largestFieldMuxDaysText, String.format("%d", currentStats.getLargestFieldMuxDays()));
+
             mAgentStatsPos = newPos;
             updateStatButtons();
         }
