@@ -483,4 +483,20 @@ public class StatTrackerActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume()
+    {
+        mDataSource.open();
+        Log.i("info", "Ingress Stat Tracker resumed - DB reopened.");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        mDataSource.close();
+        Log.i("info", "Ingress Stat Tracker paused - DB closed.");
+        super.onPause();
+    }
+
 }
