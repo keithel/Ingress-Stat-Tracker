@@ -141,6 +141,8 @@ public class StatTrackerActivity extends Activity {
             populateMap(bmp);
             AgentStats stats = new AgentStats(getResources(), mStatsMap);
             AgentStats storedStats = mDataSource.appendAgentStats(stats);
+            mAgentStats = mDataSource.getAllStats();
+            mAgentStatsPos = mAgentStats.size()-1;
 
             agentNameView.setText(mStatsMap.get(mAgentStr));
             setTextViewText(R.id.apText, mStatsMap.get(mApStr));
