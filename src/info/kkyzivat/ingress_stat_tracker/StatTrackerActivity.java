@@ -143,40 +143,40 @@ public class StatTrackerActivity extends Activity {
             AgentStats storedStats = mDataSource.appendAgentStats(stats);
 
             agentNameView.setText(mStatsMap.get(mAgentStr));
-            ((TextView)findViewById(R.id.apText)).setText(mStatsMap.get(mApStr));
+            setTextViewText(R.id.apText, mStatsMap.get(mApStr));
 
             // Discovery
-            ((TextView)findViewById(R.id.upvText)).setText(mStatsMap.get(mUpvStr));
-            ((TextView)findViewById(R.id.portalsDiscoveredText)).setText(mStatsMap.get(mDiscoversStr));
-            ((TextView)findViewById(R.id.xmCollectedText)).setText(mStatsMap.get(mXmStr));
+            setTextViewText(R.id.upvText, mStatsMap.get(mUpvStr));
+            setTextViewText(R.id.portalsDiscoveredText, mStatsMap.get(mDiscoversStr));
+            setTextViewText(R.id.xmCollectedText, mStatsMap.get(mXmStr));
 
             // Building
-            ((TextView)findViewById(R.id.hacksText)).setText(mStatsMap.get(mHacksStr));
-            ((TextView)findViewById(R.id.resonatorsDeployedText)).setText(mStatsMap.get(mResonatorsDeployedStr));
-            ((TextView)findViewById(R.id.linksCreatedText)).setText(mStatsMap.get(mLinksCreatedStr));
-            ((TextView)findViewById(R.id.controlFieldsCreatedText)).setText(mStatsMap.get(mControlFieldsCreatedStr));
-            ((TextView)findViewById(R.id.muText)).setText(mStatsMap.get(mMuStr));
-            ((TextView)findViewById(R.id.longestLinkText)).setText(mStatsMap.get(mLongestLinkStr));
-            ((TextView)findViewById(R.id.largestControlFieldText)).setText(mStatsMap.get(mLargestControlFieldStr));
-            ((TextView)findViewById(R.id.xmRechargedText)).setText(mStatsMap.get(mXmRechargedStr));
-            ((TextView)findViewById(R.id.portalsCapturedText)).setText(mStatsMap.get(mCapturesStr));
-            ((TextView)findViewById(R.id.upcText)).setText(mStatsMap.get(mUpcStr));
+            setTextViewText(R.id.hacksText, mStatsMap.get(mHacksStr));
+            setTextViewText(R.id.resonatorsDeployedText, mStatsMap.get(mResonatorsDeployedStr));
+            setTextViewText(R.id.linksCreatedText, mStatsMap.get(mLinksCreatedStr));
+            setTextViewText(R.id.controlFieldsCreatedText, mStatsMap.get(mControlFieldsCreatedStr));
+            setTextViewText(R.id.muText, mStatsMap.get(mMuStr));
+            setTextViewText(R.id.longestLinkText, mStatsMap.get(mLongestLinkStr));
+            setTextViewText(R.id.largestControlFieldText, mStatsMap.get(mLargestControlFieldStr));
+            setTextViewText(R.id.xmRechargedText, mStatsMap.get(mXmRechargedStr));
+            setTextViewText(R.id.portalsCapturedText, mStatsMap.get(mCapturesStr));
+            setTextViewText(R.id.upcText, mStatsMap.get(mUpcStr));
 
             // Combat
-            ((TextView)findViewById(R.id.resonatorsDestroyedText)).setText(mStatsMap.get(mResonatorsDestroyedStr));
-            ((TextView)findViewById(R.id.portalsNeutralizedText)).setText(mStatsMap.get(mPortalsNeutralizedStr));
-            ((TextView)findViewById(R.id.linksDestroyedText)).setText(mStatsMap.get(mLinksDestroyedStr));
-            ((TextView)findViewById(R.id.controlFieldsDestroyedText)).setText(mStatsMap.get(mControlFieldsDestroyedStr));
+            setTextViewText(R.id.resonatorsDestroyedText, mStatsMap.get(mResonatorsDestroyedStr));
+            setTextViewText(R.id.portalsNeutralizedText, mStatsMap.get(mPortalsNeutralizedStr));
+            setTextViewText(R.id.linksDestroyedText, mStatsMap.get(mLinksDestroyedStr));
+            setTextViewText(R.id.controlFieldsDestroyedText, mStatsMap.get(mControlFieldsDestroyedStr));
 
             // Health
-            ((TextView)findViewById(R.id.distanceWalkedText)).setText(mStatsMap.get(mDistanceWalkedStr));
+            setTextViewText(R.id.distanceWalkedText, mStatsMap.get(mDistanceWalkedStr));
 
             // Defense
-            ((TextView)findViewById(R.id.maxTimePortalHeldText)).setText(mStatsMap.get(mMaxTimePortalHeldStr));
-            ((TextView)findViewById(R.id.maxTimeLinkMaintainedText)).setText(mStatsMap.get(mMaxTimeLinkMaintainedStr));
-            ((TextView)findViewById(R.id.maxLinkLengthxDaysText)).setText(mStatsMap.get(mMaxLinkLengthxDaysStr));
-            ((TextView)findViewById(R.id.maxTimeFieldHeldText)).setText(mStatsMap.get(mMaxTimeFieldHeldStr));
-            ((TextView)findViewById(R.id.largestFieldMuxDaysText)).setText(mStatsMap.get(mLargestFieldMuxDaysStr));
+            setTextViewText(R.id.maxTimePortalHeldText, mStatsMap.get(mMaxTimePortalHeldStr));
+            setTextViewText(R.id.maxTimeLinkMaintainedText, mStatsMap.get(mMaxTimeLinkMaintainedStr));
+            setTextViewText(R.id.maxLinkLengthxDaysText, mStatsMap.get(mMaxLinkLengthxDaysStr));
+            setTextViewText(R.id.maxTimeFieldHeldText, mStatsMap.get(mMaxTimeFieldHeldStr));
+            setTextViewText(R.id.largestFieldMuxDaysText, mStatsMap.get(mLargestFieldMuxDaysStr));
         }
         catch (ExecutionException ee)
         {
@@ -262,9 +262,9 @@ public class StatTrackerActivity extends Activity {
             AgentStats currentStats = mAgentStats.get(newPos);
             clearStats();
 
-            ((TextView)findViewById(R.id.timestampText)).setText(currentStats.getIso8601Timestamp());
-            ((TextView)findViewById(R.id.agentNameText)).setText(currentStats.getAgent());
-            ((TextView)findViewById(R.id.apText)).setText(String.format("%d", currentStats.getAp()));
+            setTextViewText(R.id.timestampText, currentStats.getIso8601Timestamp());
+            setTextViewText(R.id.agentNameText, currentStats.getAgent());
+            setTextViewText(R.id.apText, String.format("%d", currentStats.getAp()));
             mAgentStatsPos = newPos;
             updateStatButtons();
         }
@@ -273,6 +273,7 @@ public class StatTrackerActivity extends Activity {
             Log.w("info", String.format("Tried to display %s stats when there are no more", dir.toString()));
         }
     }
+
     private void updateStatButtons()
     {
         ((ImageButton) findViewById(R.id.nextStatsButton)).setEnabled(mAgentStatsPos + 1 < mAgentStats.size());
