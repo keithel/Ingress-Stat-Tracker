@@ -9,7 +9,7 @@ Tess Two is a fork of Tesseract Tools for Android ([tesseract-android-tools](htt
 
 * Android api rev 14 or higher
 * tess-two [sources](https://github.com/rmtheis/tess-two) built and included in your android workspace.
-* A Tesseract v3.02 [trained data file](https://code.google.com/p/tesseract-ocr/downloads/list) for a language. Data files must be extracted to a phone subdirectory named `tessdata`.
+* ~~A Tesseract v3.02 [trained data file](https://code.google.com/p/tesseract-ocr/downloads/list) for a language. Data files must be extracted to a phone subdirectory named `tessdata`.~~ This is now included with the APK.
 
 Build
 =====
