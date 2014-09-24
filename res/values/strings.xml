@@ -50,5 +50,5 @@
     <string name="largest_field_muxdays">Largest Field MUs x Days</string>
     <string name="prev_stat_block">Previous Stat Block</string>
     <string name="next_stat_block">Next Stat Block</string>
-
+    <string name="delete_current_stats">Delete Current Stats</string>
 </resources>

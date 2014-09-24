@@ -51,7 +51,8 @@ public class StatTrackerActivity extends Activity {
 
     enum Direction {
         PREVIOUS,
-        NEXT
+        NEXT,
+        NONE
     };
 
     private static final String DEFAULT_LANGUAGE = "eng";
@@ -256,11 +257,26 @@ public class StatTrackerActivity extends Activity {
         displayStats(Direction.PREVIOUS);
     }
 
+    public void deleteStats(View view)
+    {
+        mDataSource.deleteAgentStats(mAgentStats.get(mAgentStatsPos));
+        clearStats();
+        mAgentStats = mDataSource.getAllStats();
+        if (mAgentStatsPos >= mAgentStats.size())
+            mAgentStatsPos = mAgentStats.size()-1;
+        updateStatButtons();
+        displayStats(Direction.NONE);
+    }
+
     private void displayStats(Direction dir)
     {
         try
         {
-            int newPos = mAgentStatsPos + ((dir == Direction.NEXT) ? 1 : -1);
+            int newPos = mAgentStatsPos;
+            if (dir == Direction.NEXT)
+                newPos += 1;
+            else if (dir == Direction.PREVIOUS)
+                newPos -= 1;
             AgentStats currentStats = mAgentStats.get(newPos);
             clearStats();
 
@@ -280,6 +296,7 @@ public class StatTrackerActivity extends Activity {
     {
         ((ImageButton) findViewById(R.id.nextStatsButton)).setEnabled(mAgentStatsPos + 1 < mAgentStats.size());
         ((ImageButton) findViewById(R.id.prevStatsButton)).setEnabled(mAgentStatsPos > 0);
+        ((ImageButton) findViewById(R.id.deleteButton)).setEnabled(mAgentStats.size() > 0);
     }
 
     private void initResourceStrings()
