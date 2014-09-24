@@ -78,20 +78,10 @@ public class AgentStats
         return s;
     }
 
-    public Long getId()
-    {
-        return _id;
-    }
+    public Long getId() { return _id; }
+    public void setId(long id) { this._id = Long.valueOf(id); }
 
-    public void setId(long id)
-    {
-        this._id = Long.valueOf(id);
-    }
-
-    public Date getTimestamp()
-    {
-        return _timestamp;
-    }
+    public Date getTimestamp() { return _timestamp; }
 
     public String getIso8601Timestamp()
     {
@@ -107,33 +97,13 @@ public class AgentStats
         _timestamp = sdf.parse(iso8601);
     }
 
-    public String getAgent()
-    {
-        return _agent;
-    }
+    public String getAgent() { return _agent; }
+    public void setAgent(String agent) { this._agent = agent; }
 
-    public void setAgent(String agent)
-    {
-        this._agent = agent;
-    }
+    public long getAp() { return _ap; }
+    public void setAp(long ap) { this._ap = ap; }
 
-    public long getAp()
-    {
-        return _ap;
-    }
+    public int getUpvs() { return _upvs; }
+    public void setUpvs(int upvs) { this._upvs = upvs; }
 
-    public void setAp(long ap)
-    {
-        this._ap = ap;
-    }
-
-    public int getUpvs()
-    {
-        return _upvs;
-    }
-
-    public void setUpvs(int upvs)
-    {
-        this._upvs = upvs;
-    }
 }
