@@ -19,6 +19,7 @@ package info.kkyzivat.ingress_stat_tracker;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -35,6 +36,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +48,11 @@ import com.koushikdutta.ion.Ion;
 
 
 public class StatTrackerActivity extends Activity {
+
+    enum Direction {
+        PREVIOUS,
+        NEXT
+    };
 
     private static final String DEFAULT_LANGUAGE = "eng";
     private static Future<String> sTessBasePath;
@@ -77,11 +85,15 @@ public class StatTrackerActivity extends Activity {
     private String mLargestFieldMuxDaysStr;
     private Set<String> mStatNames;
 
+    private AgentStatsDataSource mDataSource;
+    private List<AgentStats> mAgentStats;
+    private int mAgentStatsPos;
     private HashMap<String, String> mStatsMap;
 
     public StatTrackerActivity()
     {
         mStatsMap = new HashMap<String, String>();
+        mDataSource = new AgentStatsDataSource(this);
     }
 
     protected void populateMap(Bitmap bmp) throws ExecutionException, InterruptedException
@@ -127,9 +139,11 @@ public class StatTrackerActivity extends Activity {
         try
         {
             populateMap(bmp);
+            AgentStats stats = new AgentStats(getResources(), mStatsMap);
+            AgentStats storedStats = mDataSource.appendAgentStats(stats);
 
             agentNameView.setText(mStatsMap.get(mAgentStr));
-            ((TextView) findViewById(R.id.apText)).setText(mStatsMap.get(mApStr));
+            ((TextView)findViewById(R.id.apText)).setText(mStatsMap.get(mApStr));
 
             // Discovery
             ((TextView)findViewById(R.id.upvText)).setText(mStatsMap.get(mUpvStr));
@@ -177,7 +191,93 @@ public class StatTrackerActivity extends Activity {
             Log.i("info", Log.getStackTraceString(ie));
             agentNameView.setText("Interrupted while trying to initialize Tesseract data files");
         }
-}
+    }
+
+    private void clearTextView(int id)
+    {
+        setTextViewText(id, "");
+    }
+
+    private void setTextViewText(int id, String text)
+    {
+        ((TextView)findViewById(id)).setText(text);
+    }
+
+    private void clearStats()
+    {
+        // Basic
+        clearTextView(R.id.timestampText);
+        clearTextView(R.id.agentNameText);
+        clearTextView(R.id.apText);
+
+        // Discovery
+        clearTextView(R.id.upvText);
+        clearTextView(R.id.portalsDiscoveredText);
+        clearTextView(R.id.xmCollectedText);
+
+        // Building
+        clearTextView(R.id.hacksText);
+        clearTextView(R.id.resonatorsDeployedText);
+        clearTextView(R.id.linksCreatedText);
+        clearTextView(R.id.controlFieldsCreatedText);
+        clearTextView(R.id.muText);
+        clearTextView(R.id.longestLinkText);
+        clearTextView(R.id.largestControlFieldText);
+        clearTextView(R.id.xmRechargedText);
+        clearTextView(R.id.portalsCapturedText);
+        clearTextView(R.id.upcText);
+
+        // Combat
+        clearTextView(R.id.resonatorsDestroyedText);
+        clearTextView(R.id.portalsNeutralizedText);
+        clearTextView(R.id.linksDestroyedText);
+        clearTextView(R.id.controlFieldsDestroyedText);
+
+        // Health
+        clearTextView(R.id.distanceWalkedText);
+
+        // Defense
+        clearTextView(R.id.maxTimePortalHeldText);
+        clearTextView(R.id.maxTimeLinkMaintainedText);
+        clearTextView(R.id.maxLinkLengthxDaysText);
+        clearTextView(R.id.maxTimeFieldHeldText);
+        clearTextView(R.id.largestFieldMuxDaysText);
+    }
+
+    public void displayNextStats(View view)
+    {
+        displayStats(Direction.NEXT);
+    }
+
+    public void displayPrevStats(View view)
+    {
+        displayStats(Direction.PREVIOUS);
+    }
+
+    private void displayStats(Direction dir)
+    {
+        try
+        {
+            int newPos = mAgentStatsPos + ((dir == Direction.NEXT) ? 1 : -1);
+            AgentStats currentStats = mAgentStats.get(newPos);
+            clearStats();
+
+            ((TextView)findViewById(R.id.timestampText)).setText(currentStats.getIso8601Timestamp());
+            ((TextView)findViewById(R.id.agentNameText)).setText(currentStats.getAgent());
+            ((TextView)findViewById(R.id.apText)).setText(String.format("%d", currentStats.getAp()));
+            mAgentStatsPos = newPos;
+            updateStatButtons();
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            Log.w("info", String.format("Tried to display %s stats when there are no more", dir.toString()));
+        }
+    }
+    private void updateStatButtons()
+    {
+        ((ImageButton) findViewById(R.id.nextStatsButton)).setEnabled(mAgentStatsPos + 1 < mAgentStats.size());
+        ((ImageButton) findViewById(R.id.prevStatsButton)).setEnabled(mAgentStatsPos > 0);
+    }
 
     private void initResourceStrings()
     {
@@ -245,6 +345,11 @@ public class StatTrackerActivity extends Activity {
         initResourceStrings();
         setContentView(R.layout.activity_data_receiver);
 
+        mDataSource.open();
+        mAgentStats = mDataSource.getAllStats();
+        mAgentStatsPos = mAgentStats.size();
+        updateStatButtons();
+
         ImageView picView = (ImageView) findViewById(R.id.picture);
         TextView txtView = (TextView) findViewById(R.id.agentNameText);
         Intent receivedIntent = getIntent();
@@ -309,6 +414,7 @@ public class StatTrackerActivity extends Activity {
         else if (receivedAction.equals(Intent.ACTION_MAIN))
         {
             txtView.setText("Nothing has been shared!");
+            displayStats(Direction.PREVIOUS);
         }
     }
 

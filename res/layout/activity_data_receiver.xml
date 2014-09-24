@@ -30,6 +30,41 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageButton
+                    android:id="@+id/prevStatsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_media_previous"
+                    android:contentDescription="@string/prev_stat_block"
+                    android:onClick="displayPrevStats" />
+
+                <ImageButton
+                    android:id="@+id/nextStatsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_media_next"
+                    android:contentDescription="@string/next_stat_block"
+                    android:onClick="displayNextStats" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/timestampLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timestamp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/timestampText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp" />
+
             <TextView
                 android:id="@+id/agentNameLabel"
                 android:layout_width="wrap_content"

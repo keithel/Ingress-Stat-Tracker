@@ -21,6 +21,7 @@
     <string name="app_name">Ingress Stat Tracker</string>
     <string name="action_settings">Settings</string>
     <string name="pic">Received Image</string>
+    <string name="timestamp">Timestamp</string>
     <string name="agent_name">Agent Name</string>
     <string name="ap">AP</string>
     <string name="upv">Unique Portals Visited</string>
@@ -47,6 +48,7 @@
     <string name="max_link_lengthxdays">Max Link Length x Days</string>
     <string name="max_time_field_held">Max Time Field Held</string>
     <string name="largest_field_muxdays">Largest Field MUs x Days</string>
-    <string name="rest_of_stats">Rest of Stats</string>
+    <string name="prev_stat_block">Previous Stat Block</string>
+    <string name="next_stat_block">Next Stat Block</string>
 
 </resources>

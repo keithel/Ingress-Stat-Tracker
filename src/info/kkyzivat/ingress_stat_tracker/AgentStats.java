@@ -20,6 +20,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
+
+import android.content.res.Resources;
 
 public class AgentStats
 {
@@ -29,6 +32,22 @@ public class AgentStats
     private long ap;
 
     private static final String ISO8601_NOTZ_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public AgentStats()
+    {
+    }
+
+    public AgentStats(Resources res, Map<String, String> statsMap)
+    {
+        timestamp = new Date();
+        agent = statsMap.get(res.getString(R.string.agent_name));
+        String apStr = statsMap.get(res.getString(R.string.ap));
+        apStr = apStr.replaceAll(",", "");
+        int idxNonNum;
+        for (idxNonNum = 0; idxNonNum < apStr.length() && apStr.substring(idxNonNum, idxNonNum+1).matches("[0-9]"); idxNonNum++);
+        apStr = apStr.substring(0, idxNonNum);
+        ap = Long.parseLong(apStr);
+    }
 
     public Long getId()
     {

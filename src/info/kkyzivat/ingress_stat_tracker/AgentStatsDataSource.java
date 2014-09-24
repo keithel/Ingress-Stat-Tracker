@@ -76,7 +76,8 @@ public class AgentStatsDataSource
     public List<AgentStats> getAllStats() throws SQLException
     {
         List<AgentStats> list = new ArrayList<AgentStats>();
-        Cursor cursor = mDb.query(StatSqliteHelper.TABLE_AGENT_STATS, mAllColumns, null, null, null, null, null);
+        Cursor cursor = mDb.query(StatSqliteHelper.TABLE_AGENT_STATS, mAllColumns,
+                null, null, null, null, StatSqliteHelper.COLUMN_TIMESTAMP + " ASC");
         try
         {
             cursor.moveToFirst();
