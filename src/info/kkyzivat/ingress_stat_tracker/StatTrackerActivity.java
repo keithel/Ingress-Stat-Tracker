@@ -283,6 +283,7 @@ public class StatTrackerActivity extends Activity {
             setTextViewText(R.id.timestampText, currentStats.getIso8601Timestamp());
             setTextViewText(R.id.agentNameText, currentStats.getAgent());
             setTextViewText(R.id.apText, String.format("%d", currentStats.getAp()));
+            setTextViewText(R.id.upvText, String.format("%d", currentStats.getUpvs()));
             mAgentStatsPos = newPos;
             updateStatButtons();
         }

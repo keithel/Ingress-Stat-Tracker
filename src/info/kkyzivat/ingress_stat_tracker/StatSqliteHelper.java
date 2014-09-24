@@ -28,16 +28,17 @@ public class StatSqliteHelper extends SQLiteOpenHelper
     public static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_AGENT = "agent";
     public static final String COLUMN_AP = "ap";
+    public static final String COLUMN_UPV = "upv";
 
     private static final String DATABASE_NAME = "agent_stats.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
         + TABLE_AGENT_STATS + "(" + COLUMN_ID
         + " integer primary key autoincrement, " + COLUMN_TIMESTAMP
         + " date, " + COLUMN_AGENT + " text not null, "
-        + COLUMN_AP + " integer);";
+        + COLUMN_AP + " integer, " + COLUMN_UPV + " integer);";
 
     public StatSqliteHelper(Context context)
     {

@@ -32,7 +32,8 @@ public class AgentStatsDataSource
     private StatSqliteHelper mDbHelper;
     private String[] mAllColumns = {
             StatSqliteHelper.COLUMN_ID, StatSqliteHelper.COLUMN_TIMESTAMP,
-            StatSqliteHelper.COLUMN_AGENT, StatSqliteHelper.COLUMN_AP };
+            StatSqliteHelper.COLUMN_AGENT, StatSqliteHelper.COLUMN_AP,
+            StatSqliteHelper.COLUMN_UPV };
 
     public AgentStatsDataSource(Context context)
     {
@@ -55,6 +56,7 @@ public class AgentStatsDataSource
         values.put(StatSqliteHelper.COLUMN_TIMESTAMP, stats.getIso8601Timestamp());
         values.put(StatSqliteHelper.COLUMN_AGENT, stats.getAgent());
         values.put(StatSqliteHelper.COLUMN_AP, stats.getAp());
+        values.put(StatSqliteHelper.COLUMN_UPV, stats.getUpvs());
         long insertId = mDb.insert(StatSqliteHelper.TABLE_AGENT_STATS, null, values);
         Cursor cursor = mDb.query(StatSqliteHelper.TABLE_AGENT_STATS, mAllColumns,
                 String.format("%s = %d", StatSqliteHelper.COLUMN_ID, insertId), null, null, null, null);
@@ -105,6 +107,7 @@ public class AgentStatsDataSource
             stats.setTimestamp(cursor.getString(1));
             stats.setAgent(cursor.getString(2));
             stats.setAp(cursor.getLong(3));
+            stats.setUpvs(cursor.getInt(4));
         } catch (ParseException pe)
         {
             throw new SQLException(String.format("Database corrupt - timestamp %s on id %d invalid",

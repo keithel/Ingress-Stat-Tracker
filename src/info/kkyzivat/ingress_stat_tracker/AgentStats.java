@@ -26,10 +26,11 @@ import android.content.res.Resources;
 
 public class AgentStats
 {
-    private Long id;
-    private Date timestamp;
-    private String agent;
-    private long ap;
+    private Long _id;
+    private Date _timestamp;
+    private String _agent;
+    private long _ap;
+    private int _upvs;
 
     private static final String ISO8601_NOTZ_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -39,35 +40,41 @@ public class AgentStats
 
     public AgentStats(Resources res, Map<String, String> statsMap)
     {
-        timestamp = new Date();
-        agent = statsMap.get(res.getString(R.string.agent_name));
-        String apStr = statsMap.get(res.getString(R.string.ap));
-        apStr = apStr.replaceAll(",", "");
+        _timestamp = new Date();
+        _agent = statsMap.get(res.getString(R.string.agent_name));
+        _ap = Long.parseLong(prepIntegerString(statsMap.get(res.getString(R.string.ap))));
+        _upvs = Integer.parseInt(prepIntegerString(statsMap.get(res.getString(R.string.upv))));
+    }
+
+    private String prepIntegerString(String str)
+    {
+        String s = new String(str);
+        s = s.replaceAll(",", "");
         int idxNonNum;
-        for (idxNonNum = 0; idxNonNum < apStr.length() && apStr.substring(idxNonNum, idxNonNum+1).matches("[0-9]"); idxNonNum++);
-        apStr = apStr.substring(0, idxNonNum);
-        ap = Long.parseLong(apStr);
+        for (idxNonNum = 0; idxNonNum < s.length() && s.substring(idxNonNum, idxNonNum+1).matches("[0-9]"); idxNonNum++);
+        s = s.substring(0, idxNonNum);
+        return s;
     }
 
     public Long getId()
     {
-        return id;
+        return _id;
     }
 
     public void setId(long id)
     {
-        this.id = Long.valueOf(id);
+        this._id = Long.valueOf(id);
     }
 
     public Date getTimestamp()
     {
-        return timestamp;
+        return _timestamp;
     }
 
     public String getIso8601Timestamp()
     {
         SimpleDateFormat sdf = new SimpleDateFormat(ISO8601_NOTZ_FORMAT, Locale.US);
-        return sdf.format(timestamp);
+        return sdf.format(_timestamp);
     }
 
     public void setTimestamp(String iso8601) throws ParseException
@@ -75,26 +82,36 @@ public class AgentStats
         // Locale.US was used to shut up Eclipse.. says for ASCII (which this will be), to use Locale.US..
         // FIXME: Is Locale.US right? (see above)
         SimpleDateFormat sdf = new SimpleDateFormat(ISO8601_NOTZ_FORMAT, Locale.US);
-        timestamp = sdf.parse(iso8601);
+        _timestamp = sdf.parse(iso8601);
     }
 
     public String getAgent()
     {
-        return agent;
+        return _agent;
     }
 
     public void setAgent(String agent)
     {
-        this.agent = agent;
+        this._agent = agent;
     }
 
     public long getAp()
     {
-        return ap;
+        return _ap;
     }
 
     public void setAp(long ap)
     {
-        this.ap = ap;
+        this._ap = ap;
+    }
+
+    public int getUpvs()
+    {
+        return _upvs;
+    }
+
+    public void setUpvs(int upvs)
+    {
+        this._upvs = upvs;
     }
 }
