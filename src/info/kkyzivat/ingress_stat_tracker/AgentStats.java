@@ -31,6 +31,28 @@ public class AgentStats
     private String _agent;
     private long _ap;
     private int _upvs;
+    private int _portalsDiscovered;
+    private long _xmCollected;
+    private int _hacks;
+    private int _resonatorsDeployed;
+    private int _linksCreated;
+    private int _controlFieldsCreated;
+    private int _mindUnitsCaptured;
+    private int _longestLink;
+    private int _largestControlField;
+    private long _xmRecharged;
+    private int _portalsCaptured;
+    private int _upcs;
+    private int _resonatorsDestroyed;
+    private int _portalsNeutralized;
+    private int _linksDestroyed;
+    private int _controlFieldsDestroyed;
+    private int _distanceWalked;
+    private int _maxTimePortalHeld;
+    private int _maxTimeLinkMaintained;
+    private long _maxLinkLengthxDays;
+    private int _maxTimeFieldHeld;
+    private long _largestFieldMuxDays;
 
     private static final String ISO8601_NOTZ_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
