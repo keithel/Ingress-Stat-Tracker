@@ -142,7 +142,7 @@ public class StatTrackerActivity extends Activity {
         {
             populateMap(bmp);
             AgentStats stats = new AgentStats(getResources(), mStatsMap);
-            AgentStats storedStats = mDataSource.appendAgentStats(stats);
+            mDataSource.appendAgentStats(stats);
             mAgentStats = mDataSource.getAllStats();
             mAgentStatsPos = mAgentStats.size()-1;
 
