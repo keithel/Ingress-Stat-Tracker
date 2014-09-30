@@ -35,6 +35,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,7 +86,7 @@ public class StatTrackerActivity extends Activity {
     private String mMaxLinkLengthxDaysStr;
     private String mMaxTimeFieldHeldStr;
     private String mLargestFieldMuxDaysStr;
-    private Set<String> mStatNames;
+    private Set<Pair<String, Integer>> mStatNames;
 
     private AgentStatsDataSource mDataSource;
     private List<AgentStats> mAgentStats;
@@ -116,19 +117,27 @@ public class StatTrackerActivity extends Activity {
         mStatsMap.put(mAgentStr, baseApi.getUTF8Text().replaceFirst(" .*$", ""));
         Log.i("info", "Recognized Agent Name: " + mStatsMap.get(mAgentStr));
 
+        boolean varStatus = baseApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "0123456789,");
         baseApi.setRectangle(allLinesPixa.getBoxRect(3));
-        mStatsMap.put(mApStr, baseApi.getUTF8Text());
+        mStatsMap.put(mApStr, baseApi.getUTF8Text().split("\\s")[0]);
+        varStatus = baseApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "");
         Log.i("info", "AP: " + mStatsMap.get(mApStr));
 
         for (Rect curRect : allLinesPixa.getBoxRects())
         {
             baseApi.setRectangle(curRect);
             String text = baseApi.getUTF8Text();
-            for (String statName : mStatNames)
+            for (Pair<String, Integer> statNamePair : mStatNames)
             {
-                if (text.startsWith(statName))
+                if (text.startsWith(statNamePair.first))
                 {
-                    mStatsMap.put(statName, baseApi.getUTF8Text().replaceFirst(statName + " ", ""));
+                    varStatus = baseApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "0123456789,M");
+                    baseApi.setRectangle(curRect);
+                    String[] splitStatString = baseApi.getUTF8Text().split("\\s");
+                    int pos = statNamePair.second < 0 ? splitStatString.length+statNamePair.second : statNamePair.second;
+                    mStatsMap.put(statNamePair.first, splitStatString[pos]);
+                    varStatus = baseApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "");
+                    break;
                 }
             }
         }
@@ -324,63 +333,68 @@ public class StatTrackerActivity extends Activity {
         ((ImageButton) findViewById(R.id.deleteButton)).setEnabled(mAgentStats.size() > 0);
     }
 
+    private Pair<String, Integer> statNamePair(String statName, int statPosition)
+    {
+        return new Pair<String, Integer>(statName, statPosition);
+    }
+
     private void initResourceStrings()
     {
-        mStatNames = new HashSet<String>();
+        mStatNames = new HashSet<Pair<String, Integer>>();
         Resources res = getResources();
 
         mAgentStr = res.getString(R.string.agent_name);
-        mStatNames.add(mAgentStr);
+        mStatNames.add(statNamePair(mAgentStr, 0));
         mApStr = res.getString(R.string.ap);
-        mStatNames.add(mApStr);
+        mStatNames.add(statNamePair(mApStr, 0));
         mUpvStr = res.getString(R.string.upv);
-        mStatNames.add(mUpvStr);
+        mStatNames.add(statNamePair(mUpvStr, 3));
         mDiscoversStr = res.getString(R.string.portals_discovered);
-        mStatNames.add(mDiscoversStr);
+        mStatNames.add(statNamePair(mDiscoversStr, 2));
         mXmStr = res.getString(R.string.xm_collected);
-        mStatNames.add(mXmStr);
+        mStatNames.add(statNamePair(mXmStr, 2));
         mHacksStr = res.getString(R.string.hacks);
-        mStatNames.add(mHacksStr);
+        mStatNames.add(statNamePair(mHacksStr, 1));
         mResonatorsDeployedStr = res.getString(R.string.resonators_deployed);
-        mStatNames.add(mResonatorsDeployedStr);
+        mStatNames.add(statNamePair(mResonatorsDeployedStr, 2));
         mLinksCreatedStr = res.getString(R.string.links_created);
-        mStatNames.add(mLinksCreatedStr);
+        mStatNames.add(statNamePair(mLinksCreatedStr, 2));
         mControlFieldsCreatedStr = res.getString(R.string.control_fields_created);
-        mStatNames.add(mControlFieldsCreatedStr);
+        mStatNames.add(statNamePair(mControlFieldsCreatedStr, 3));
         mMuStr = res.getString(R.string.mu);
-        mStatNames.add(mMuStr);
+        mStatNames.add(statNamePair(mMuStr, 3));
         mLongestLinkStr = res.getString(R.string.longest_link);
-        mStatNames.add(mLongestLinkStr);
+        mStatNames.add(statNamePair(mLongestLinkStr, 4));
         mLargestControlFieldStr = res.getString(R.string.largest_control_field);
-        mStatNames.add(mLargestControlFieldStr);
+        mStatNames.add(statNamePair(mLargestControlFieldStr, 3));
         mXmRechargedStr = res.getString(R.string.xm_recharged);
-        mStatNames.add(mXmRechargedStr);
+        mStatNames.add(statNamePair(mXmRechargedStr, 2));
         mXmRecharged2Str = res.getString(R.string.xm_recharged2);
-        mStatNames.add(mXmRecharged2Str);
+        mStatNames.add(statNamePair(mXmRecharged2Str, 2));
         mCapturesStr = res.getString(R.string.portals_captured);
-        mStatNames.add(mCapturesStr);
+        mStatNames.add(statNamePair(mCapturesStr, 2));
         mUpcStr = res.getString(R.string.upc);
-        mStatNames.add(mUpcStr);
+        mStatNames.add(statNamePair(mUpcStr, 3));
         mResonatorsDestroyedStr = res.getString(R.string.resonators_destroyed);
-        mStatNames.add(mResonatorsDestroyedStr);
+        mStatNames.add(statNamePair(mResonatorsDestroyedStr, 2));
         mPortalsNeutralizedStr = res.getString(R.string.portals_neutralized);
-        mStatNames.add(mPortalsNeutralizedStr);
+        mStatNames.add(statNamePair(mPortalsNeutralizedStr, 2));
         mLinksDestroyedStr = res.getString(R.string.links_destroyed);
-        mStatNames.add(mLinksDestroyedStr);
+        mStatNames.add(statNamePair(mLinksDestroyedStr, 3));
         mControlFieldsDestroyedStr = res.getString(R.string.control_fields_destroyed);
-        mStatNames.add(mControlFieldsDestroyedStr);
+        mStatNames.add(statNamePair(mControlFieldsDestroyedStr, 4));
         mDistanceWalkedStr = res.getString(R.string.distance_walked);
-        mStatNames.add(mDistanceWalkedStr);
+        mStatNames.add(statNamePair(mDistanceWalkedStr, 2));
         mMaxTimePortalHeldStr = res.getString(R.string.max_time_portal_held);
-        mStatNames.add(mMaxTimePortalHeldStr);
+        mStatNames.add(statNamePair(mMaxTimePortalHeldStr, -2));
         mMaxTimeLinkMaintainedStr = res.getString(R.string.max_time_link_maintained);
-        mStatNames.add(mMaxTimeLinkMaintainedStr);
+        mStatNames.add(statNamePair(mMaxTimeLinkMaintainedStr, -2));
         mMaxLinkLengthxDaysStr = res.getString(R.string.max_link_lengthxdays);
-        mStatNames.add(mMaxLinkLengthxDaysStr);
+        mStatNames.add(statNamePair(mMaxLinkLengthxDaysStr, 5));
         mMaxTimeFieldHeldStr = res.getString(R.string.max_time_field_held);
-        mStatNames.add(mMaxTimeFieldHeldStr);
+        mStatNames.add(statNamePair(mMaxTimeFieldHeldStr, -2));
         mLargestFieldMuxDaysStr = res.getString(R.string.largest_field_muxdays);
-        mStatNames.add(mLargestFieldMuxDaysStr);
+        mStatNames.add(statNamePair(mLargestFieldMuxDaysStr, -2));
 
     }
 
